@@ -3,8 +3,8 @@ module Api
     include Paginatable
 
     def index
-      posts = paginate(Post.all)
-      payload(data: posts, status: 200)
+      posts, posts_meta = paginate(Post.all)
+      payload(data: posts, meta: posts_meta, status: 200)
     end
   end
 end

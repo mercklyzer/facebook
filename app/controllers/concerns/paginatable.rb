@@ -19,7 +19,20 @@ module Paginatable
   end
 
   def paginate(scope)
-    scope.paginate(per_page: @page_size, page: @page_number)
+    data = scope.paginate(per_page: @page_size, page: @page_number)
+    meta = meta(data)
+    [data, meta]
+  end
+
+  def meta(paginated_scope)
+    {
+      total_count: paginated_scope.total_entries,
+      total_pages: paginated_scope.total_pages,
+      current_page: paginated_scope.current_page,
+      per_page: paginated_scope.per_page,
+      previous_page: paginated_scope.previous_page,
+      next_page: paginated_scope.next_page
+    }
   end
 
   def invalid_pagination_params(exception)
