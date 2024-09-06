@@ -14,8 +14,8 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password:
-  host: localhost
+  password: secret-password
+  host: 127.0.0.1
 
 development:
   <<: *default
@@ -52,4 +52,4 @@ production:
   <<: *default
   database: facebook_production
   username: facebook
-  password: <%= ENV["FACEBOOK_DATABASE_PASSWORD"] %>
+  password: password
