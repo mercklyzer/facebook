@@ -1,5 +1,6 @@
 module Api
   class PostsController < ApplicationController
+    include FindableResource
     include Paginatable
 
     def index
@@ -15,6 +16,16 @@ module Api
         payload(data: post, status: 200)
       else
         payload(errors: post.errors.map(&:full_message), status: 400)
+      end
+    end
+
+    def update
+      update_ok = @post.update(post_params)
+
+      if update_ok
+        payload(data:@post, status: 200)
+      else
+        payload(errors:@post.errors.map(&:full_message), status: 400)
       end
     end
 
