@@ -11,8 +11,8 @@ module Paginatable
   private
 
   def set_default_pagination
-    @page_number = params[:page][:number]&.to_i || 1
-    @page_size = params[:page][:size]&.to_i || DEFAULT_PAGE_SIZE
+    @page_number = params.dig(:page, :number)&.to_i || 1
+    @page_size = params.dig(:page, :size)&.to_i || DEFAULT_PAGE_SIZE
 
     raise ArgumentError, 'Page number must be an integer greater than zero' if @page_number < 1
     raise ArgumentError, 'Page size must be an integer greater than zero' if @page_size < 1
