@@ -2,7 +2,7 @@ module FindableResource
   extend ActiveSupport::Concern
 
   included do
-    before_action :find_resource_by_id, only: [:update]
+    before_action :find_resource_by_id, only: [:update, :destroy]
   end
 
   private

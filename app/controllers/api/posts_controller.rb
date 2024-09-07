@@ -29,6 +29,16 @@ module Api
       end
     end
 
+    def destroy
+      delete_ok = @post.destroy
+
+      if delete_ok
+        payload(data:@post, status: 200)
+      else
+        payload(errors:@post.errors.map(&:full_message), status: 400)
+      end
+    end
+
     private
 
     def post_params
