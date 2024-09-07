@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :users do
       post 'signup'
+      post 'login'
     end
     resources :posts, only: [:index, :create, :update, :destroy]
   end

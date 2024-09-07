@@ -8,4 +8,14 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :first_name, presence: true
   validates :last_name, presence: true
+
+  validate :username_should_not_match_any_email
+
+  private
+
+  def username_should_not_match_any_email
+    if User.where(email: username).exists? || User.where(username: email).exists?
+      errors.add(:username, "has already been taken")
+    end
+  end
 end

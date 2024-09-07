@@ -1,10 +1,10 @@
 module Api
   class UsersController < ApplicationController
     def signup
-      user = User.new(user_params)
-      saved_ok = user.save
+      user = User.new(signup_params)
+      signup_ok = user.save
 
-      if saved_ok
+      if signup_ok
         user = user_without_password(user)
         payload(data: user, status: 200)
       else
@@ -12,10 +12,29 @@ module Api
       end
     end
 
+    def login
+      username_or_email = login_params[:username_or_email]
+      password = login_params[:password]
+
+      user = User.find_by(username: username_or_email) || User.find_by(email: username_or_email)
+
+      if user.blank?
+        payload(errors: ["User does not exist."], status: 400)
+      elsif user.authenticate(password).blank?
+        payload(errors: ["Incorrect password."], status: 400)
+      else
+        payload(data: user_without_password(user), status: 200)
+      end
+    end
+
     private
 
-    def user_params
+    def signup_params
       params.require(:user).permit(:username, :password, :password_confirmation, :first_name, :last_name, :email)
+    end
+
+    def login_params
+      params.require(:user).permit(:username_or_email, :password)
     end
 
     def user_without_password(user)
