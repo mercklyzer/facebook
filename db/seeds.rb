@@ -13,3 +13,4 @@ def load_seed(filename)
 end
 
 load_seed 'posts'
+load_seed 'users'
