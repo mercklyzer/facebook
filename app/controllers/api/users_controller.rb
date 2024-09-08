@@ -6,7 +6,8 @@ module Api
 
       if signup_ok
         user = user_without_password(user)
-        payload(data: user, status: 200)
+        jwt = ::JwtLoginToken.encode(user[:id])
+        payload(data: {user: user, token: jwt}, status: 200)
       else
         payload(errors: user.errors.map(&:full_message), status: 400)
       end
@@ -23,7 +24,9 @@ module Api
       elsif user.authenticate(password).blank?
         payload(errors: ["Incorrect password."], status: 400)
       else
-        payload(data: user_without_password(user), status: 200)
+        user = user_without_password(user)
+        jwt = ::JwtLoginToken.encode(user[:id])
+        payload(data: {user: user, token: jwt}, status: 200)
       end
     end
 
@@ -38,7 +41,7 @@ module Api
     end
 
     def user_without_password(user)
-      user.as_json(except: [:password_digest])
+      user.as_json(except: [:password_digest]).deep_symbolize_keys
     end
   end
 end
