@@ -12,7 +12,8 @@ class JwtLoginToken
   def self.decode(token)
     begin
       decoded_data = JWT.decode(token, SECRET_KEY, true, algorithm: ALGORITHM)
-    rescue JWT::ExpiredSignature
+    rescue JWT::ExpiredSignature, JWT::VerificationError
+      # TODO: send to remote logger
       false
     end
   end

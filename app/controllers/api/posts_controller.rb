@@ -1,5 +1,5 @@
 module Api
-  class PostsController < ApplicationController
+  class PostsController < AuthenticatedBaseController
     include FindableResource
     include Paginatable
 
