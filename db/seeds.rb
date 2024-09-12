@@ -12,5 +12,5 @@ def load_seed(filename)
   load Rails.root.join("db/seeds/#{filename}.rb")
 end
 
-load_seed 'posts'
 load_seed 'users'
+load_seed 'posts'
