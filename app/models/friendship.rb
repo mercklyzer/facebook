@@ -42,18 +42,21 @@ class Friendship < ApplicationRecord
   end
 
   def unique_friendship
-    error_message = if accepted?
-      "Friendship already exists"
-    elsif pending?
+    friendship = existing_friendship
+    return if friendship.blank?
+
+    error_message = if friendship.accepted?
+      "Both users are already friends"
+    elsif friendship.pending?
       "A friend request has already been sent"
     end
 
-    errors.add(:base, error_message) if friendship_exists?
+    errors.add(:base, error_message)
   end
 
-  def friendship_exists?
-    Friendship.where.not(status: :rejected).exists?(sender_id: sender_id, receiver_id: receiver_id) ||
-    Friendship.where.not(status: :rejected).exists?(sender_id: receiver_id, receiver_id: sender_id)
+  def existing_friendship
+    Friendship.where.not(status: :rejected).find_by(sender_id: sender_id, receiver_id: receiver_id) ||
+    Friendship.where.not(status: :rejected).find_by(sender_id: receiver_id, receiver_id: sender_id)
   end
 
   def decide_friend_request(status)
