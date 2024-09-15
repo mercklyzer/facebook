@@ -5,6 +5,7 @@ class Friendship < ApplicationRecord
   belongs_to :receiver, class_name: 'User'
 
   validate :unique_friendship, on: :create
+  validate :friendship_not_to_self
 
   # returns friendship records with sender and receiver's username
   scope :enriched_friendships, -> (user_id, status) do
@@ -35,6 +36,10 @@ class Friendship < ApplicationRecord
   end
 
   private
+
+  def friendship_not_to_self
+    errors.add(:base, "A friendship pointing to self is not allowed") if sender_id == receiver_id
+  end
 
   def unique_friendship
     error_message = if accepted?
