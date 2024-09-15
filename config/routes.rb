@@ -13,6 +13,15 @@ Rails.application.routes.draw do
       post 'signup'
       post 'login'
     end
+
     resources :posts, only: [:index, :create, :update, :destroy]
+
+    resources :friendships, only: [:index] do
+      post 'send_friend_request', on: :collection
+      member do
+        post 'accept_friend_request'
+        post 'reject_friend_request'
+      end
+    end
   end
 end

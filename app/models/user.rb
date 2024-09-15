@@ -24,12 +24,14 @@ class User < ApplicationRecord
   end
 
   def friends
-    friendships.where(status: :accepted)
+    User.joins("INNER JOIN friendships ON friendships.sender_id = users.id OR friendships.receiver_id = users.id")
+      .select('users.*, friendships.status')
+      .where(friendships: {status: Friendship.statuses[:accepted]})
   end
 
+  # to see if successful, check for #persisted? and get #errors
   def send_friend_request(other_user)
-    friend_request = sent_friend_requests.create(receiver: other_user)
-    friend_request.persisted?
+    sent_friend_requests.create(receiver: other_user)
   end
 
   def accept_friend_request(other_user)
