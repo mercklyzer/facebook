@@ -1,8 +1,17 @@
+# For this to work, the controller name must match its model
+# i.e. PostsController -> Post (model)
 module FindableResource
   extend ActiveSupport::Concern
 
   included do
-    before_action :find_resource_by_id, only: [:update, :destroy]
+    before_action :find_resource_by_id, only: find_resource_by_id_scoped_methods
+  end
+
+  class_methods do
+    # override this in the controller if you must
+    def find_resource_by_id_scoped_methods
+      [:update, :destroy]
+    end
   end
 
   private
