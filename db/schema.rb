@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_15_073149) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_15_132913) do
   create_table "friendships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "sender_id", null: false
     t.bigint "receiver_id", null: false
@@ -18,7 +18,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_15_073149) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["receiver_id"], name: "index_friendships_on_receiver_id"
-    t.index ["sender_id", "receiver_id"], name: "index_friendships_on_sender_id_and_receiver_id", unique: true
     t.index ["sender_id"], name: "index_friendships_on_sender_id"
   end
 
