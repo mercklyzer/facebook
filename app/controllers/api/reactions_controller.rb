@@ -32,12 +32,12 @@ module Api
     end
 
     def destroy
-      delete_ok = @reaction.destroy
+      delete_ok = reaction.destroy
 
       if delete_ok
-        payload(data:@reaction, status: 200)
+        payload(data: reaction, status: 200)
       else
-        payload(errors:@reaction.errors.map(&:full_message), status: 400)
+        payload(errors: reaction.errors.map(&:full_message), status: 400)
       end
     end
 

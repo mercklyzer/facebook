@@ -5,7 +5,7 @@ module Api
 
     attr_reader :comment
 
-    before_action :set_comment, :verify_comment_exists, :verify_user_owns_comment ,only: [:update]
+    before_action :set_comment, :verify_comment_exists, :verify_user_owns_comment ,only: [:update, :destroy]
 
     def index
       comments, comments_meta = paginate(post.comments)
@@ -25,6 +25,16 @@ module Api
 
     def update
       if comment.update(comment_params)
+        payload(data: comment, status: 200)
+      else
+        payload(errors: comment.errors.map(&:full_message), status: 400)
+      end
+    end
+
+    def destroy
+      delete_ok = comment.destroy
+
+      if delete_ok
         payload(data: comment, status: 200)
       else
         payload(errors: comment.errors.map(&:full_message), status: 400)
