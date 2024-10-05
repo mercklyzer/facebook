@@ -14,7 +14,9 @@ Rails.application.routes.draw do
       post 'login'
     end
 
-    resources :posts, only: [:index, :create, :update, :destroy]
+    resources :posts, only: [:index, :create, :update, :destroy] do
+      resources :reactions, only: [:index, :create, :update, :destroy]
+    end
 
     resources :friendships, only: [:index] do
       post 'send_friend_request', on: :collection

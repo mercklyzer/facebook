@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_15_132913) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_05_084549) do
   create_table "friendships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "sender_id", null: false
     t.bigint "receiver_id", null: false
@@ -29,6 +29,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_15_132913) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "reactions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "owner_type", null: false
+    t.bigint "owner_id", null: false
+    t.string "reaction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id"], name: "index_reactions_on_owner"
+    t.index ["user_id", "owner_id", "owner_type"], name: "index_reactions_on_user_id_and_owner_id_and_owner_type", unique: true
+    t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "username", null: false
     t.string "password_digest", null: false
@@ -44,4 +56,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_15_132913) do
   add_foreign_key "friendships", "users", column: "receiver_id"
   add_foreign_key "friendships", "users", column: "sender_id"
   add_foreign_key "posts", "users"
+  add_foreign_key "reactions", "users"
 end
