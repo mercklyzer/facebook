@@ -5,6 +5,7 @@ class Reaction < ApplicationRecord
   belongs_to :owner, polymorphic: true
 
   validates :user_id, uniqueness: { scope: [:owner_id, :owner_type], message: 'already has an entry' }
+  validates :reaction, inclusion: { in: reactions.keys }
 
   # Dynamically define class methods for each reaction
   reactions.keys.each do |key|
