@@ -1,15 +1,14 @@
 class Reaction < ApplicationRecord
-  enum :reaction, {like: 0, heart: 1, care: 2, haha: 3, wow:4, sad: 5, angry: 6}
+  reaction_types = ['like', 'heart', 'care', 'haha', 'wow', 'sad', 'angry'].freeze
 
   belongs_to :user
   belongs_to :owner, polymorphic: true
 
   validates :user_id, uniqueness: { scope: [:owner_id, :owner_type], message: 'already has an entry' }
-  validates :reaction, inclusion: { in: reactions.keys }
+  validates :reaction, inclusion: { in: reaction_types, message: 'Invalid reaction' }
 
   # Dynamically define class methods for each reaction
-  reactions.keys.each do |key|
-    # to see if creation is successful, check for #persisted? and get #errors
+  reaction_types.each do |key|
     singleton_class.define_method("add_#{key}") do |user, owner|
       Reaction.create(user: user, owner: owner, reaction: key)
     end

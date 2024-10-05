@@ -6,7 +6,6 @@ module Api
 
     before_action :set_post, :verify_post_exists
     before_action :set_reaction, :verify_reaction_exists, :verify_user_owns_reaction ,only: [:update, :destroy]
-    before_action :validate_valid_reaction, only: [:create, :update]
 
     def index
       reactions, reactions_meta = paginate(post.reactions)
@@ -14,8 +13,10 @@ module Api
     end
 
     def create
-      reaction = Reaction.create(user: user, owner: post, reaction: reaction_params[:type])
-      if reaction.persisted?
+      reaction = Reaction.new(user: user, owner: post, reaction: reaction_params[:type])
+      saved_ok = reaction.save
+
+      if saved_ok
         payload(data: reaction, status: 200)
       else
         payload(errors: reaction.errors.map(&:full_message), status: 400)
@@ -51,12 +52,6 @@ module Api
 
     def reaction_params
       params.require(:reaction).permit(:type)
-    end
-
-    # sucks that model enum does not validate this properly
-    # calling update raises an exceptions instead of false
-    def validate_valid_reaction
-      return payload(errors: ["Invalid reaction"], status: 400) unless Reaction.reactions.keys.include?(reaction_params[:type])
     end
 
     def set_reaction

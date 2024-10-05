@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_16_113425) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_05_084549) do
   create_table "friendships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "sender_id", null: false
     t.bigint "receiver_id", null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_16_113425) do
     t.bigint "user_id", null: false
     t.string "owner_type", null: false
     t.bigint "owner_id", null: false
-    t.integer "reaction", null: false
+    t.string "reaction", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_type", "owner_id"], name: "index_reactions_on_owner"
