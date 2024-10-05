@@ -1,10 +1,10 @@
 module Api
   class ReactionsController < AuthenticatedBaseController
     include Paginatable
+    include BelongsToPost
 
-    attr_reader :post, :reaction
+    attr_reader :reaction
 
-    before_action :set_post, :verify_post_exists
     before_action :set_reaction, :verify_reaction_exists, :verify_user_owns_reaction ,only: [:update, :destroy]
 
     def index
@@ -32,24 +32,16 @@ module Api
     end
 
     def destroy
-      delete_ok = @reaction.destroy
+      delete_ok = reaction.destroy
 
       if delete_ok
-        payload(data:@reaction, status: 200)
+        payload(data: reaction, status: 200)
       else
-        payload(errors:@reaction.errors.map(&:full_message), status: 400)
+        payload(errors: reaction.errors.map(&:full_message), status: 400)
       end
     end
 
     private
-    def set_post
-      @post = Post.find_by(id: params[:post_id])
-    end
-
-    def verify_post_exists
-      return payload(errors: ["Post does not exist"], status: 400) unless post.present?
-    end
-
     def reaction_params
       params.require(:reaction).permit(:type)
     end
