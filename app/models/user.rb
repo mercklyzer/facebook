@@ -27,6 +27,7 @@ class User < ApplicationRecord
     User.joins("INNER JOIN friendships ON friendships.sender_id = users.id OR friendships.receiver_id = users.id")
       .select('users.*, friendships.status')
       .where(friendships: {status: Friendship.statuses[:accepted]})
+      .where('friendships.sender_id = :id OR friendships.receiver_id = :id', id: id)
   end
 
   # to see if successful, check for #persisted? and get #errors
@@ -36,12 +37,12 @@ class User < ApplicationRecord
 
   def accept_friend_request(other_user)
     friend_request = received_friend_requests.find_by(sender: other_user)
-    friend_request.update(status: :accepted) if friend_request
+    friend_request.accept_friend_request
   end
 
   def reject_friend_request(other_user)
     friend_request = received_friend_requests.find_by(sender: other_user)
-    friend_request.update(status: :rejected) if friend_request
+    friend_request.reject_friend_request
   end
 
   private
