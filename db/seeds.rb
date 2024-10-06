@@ -12,5 +12,23 @@ def load_seed(filename)
   load Rails.root.join("db/seeds/#{filename}.rb")
 end
 
+puts "Deleting records..."
+models = ActiveRecord::Base.descendants
+models.each { |model| model.destroy_all }
+
+puts "Loading users..."
 load_seed 'users'
+
+puts "Loading friendships..."
+load_seed 'friendships'
+
+puts "Loading posts..."
 load_seed 'posts'
+
+puts "Loading comments..."
+load_seed 'comments'
+
+puts "Loading reaction..."
+load_seed 'reactions'
+
+puts "Success!"

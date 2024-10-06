@@ -31,6 +31,22 @@ users = [
     last_name: "Sajaud",
     email: "azza.sajaud@gmail.com"
   },
+  {
+    username: "laser.blitz",
+    password:"password",
+    password_confirmation: "password",
+    first_name: "Laser",
+    last_name: "Blitz",
+    email: "laser.blitz@gmail.com"
+  },
+  {
+    username: "krieg.kaiser",
+    password:"password",
+    password_confirmation: "password",
+    first_name: "Krieg",
+    last_name: "Kaiser",
+    email: "krieg.kaiser@gmail.com"
+  },
 ]
 
 users.each do |user|
