@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.2.2"
+ruby "3.3.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.4"
@@ -34,6 +34,9 @@ gem 'pry', '~> 0.14.2'
 
 # For pagination
 gem 'will_paginate', '~> 4.0'
+
+# cors
+gem "rack-cors"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
