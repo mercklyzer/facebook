@@ -35,6 +35,9 @@ gem 'pry', '~> 0.14.2'
 # For pagination
 gem 'will_paginate', '~> 4.0'
 
+# cors
+gem "rack-cors"
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
